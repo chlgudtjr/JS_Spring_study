@@ -1,0 +1,183 @@
+# 01-21
+
+### 1. 게시판 replyShape 생성시 아래의 쿼리문에서 bStep > ? 은 무슨 의미 인가?
+
+```jsx
+update mvc_board set bStep = bStep + 1 where bGroup = ? and bStep > ?
+```
+
+게시판에 댓글을 달았을 때 bStep은 원 글에 대한 그룹에서 몇 번째에 위치해 있는지 알려주는 표시이다. 그래서 ?보다 bStep의 번호와 bGroup의 번호가 높게 되면 bStep은 1증가하여 최신순으로 정렬된다. (계단식으로 정렬되어 1증가하면 원 글 바로 아래에 올라옴)
+
+---
+
+### 2. sql 문제
+
+```sql
+-17. 부서별 급여 평균을 출력하시오.
+-18. 오늘은 몇요일인가? 
+-10. EMP Table에서 급여가 1800 이상이면 ‘good’, 아니면 ‘poor’를 출력하시오.
+```
+
+- SQL답
+
+    ```sql
+    --A1.
+    select deptno, round(avg(sal)) from emp;
+    --A2.
+    select to_char(sysdate, day) from dual;
+    --A3.
+    ```
+
+---
+
+### 3. 가위바위보 이미지 넣어서 짜시오.
+
+- 선생님 코드
+
+    ```jsx
+    <!DOCTYPE html>
+    <html>
+    <head>
+       <meta charset="EUC-KR">
+       <title>Insert title here</title>
+    </head>
+    <script type="text/javascript">
+     window.onload = function(){
+       
+          function RPSPlayer(your) {
+             var rps = ['가위','바위','보'];
+             var rcpImg = [
+                "https://lh3.googleusercontent.com/proxy/sKYu5a59Vo-J1kf95vaT6qNeNlJ3-P8UmPpOXYIb-qNtOboDS0kC8-uyj9_6fZaVzgABV6VqLBPXujScvQyolLNTJWyr6A",
+                "https://lh3.googleusercontent.com/proxy/I8igzN6mkoV4n55CnIZGxd1s2F1tCeP21iv95qOisNQyO2RdhagyV9uncNbvSWiHftI-JkuDTXK93_e1gtKSrWoQaVvP8g",
+                "http://isweb.joongbu.ac.kr/~jgm/photo/paper.png"
+             ];
+             
+             var selfNum = 0;
+             var yourRPS = your;
+             
+             this.setSelfNum = function() {
+                selfNum = Math.floor( Math.random() * 3 );
+             };
+
+             this.result = function() {
+
+                this.setSelfNum();
+                var yourImg = document.getElementById("user");
+                var comImg = document.getElementById("computer");
+                var resultText = document.getElementById("result");
+       
+
+                switch (yourRPS) {
+
+                   case "가위":
+                      if (  rps[selfNum] == "가위") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "무승부입니다";
+
+                      } else if (rps[selfNum]== "바위") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "컴퓨터 WIN!";
+
+                      } else if(rps[selfNum] == "보") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "유저 WIN!";
+                      } 
+                      break;
+       
+                   case "바위":
+                      if (rps[selfNum]== "바위") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "무승부입니다";
+                      } else if (rps[selfNum] == "보") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "컴퓨터 WIN!";
+                      } else if (rps[selfNum] == "가위") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "유저 WIN!";
+                      } 
+                      break;
+       
+                   case "보":
+                      if (rps[selfNum] == "보") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "무승부입니다";
+                      } else if (rps[selfNum] == "가위") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "컴퓨터 WIN!";
+                      } else if (rps[selfNum] == "바위") {
+                         yourImg.setAttribute("src",rcpImg[rps.indexOf(yourRPS)]);
+                         comImg.setAttribute("src",rcpImg[selfNum]);
+                         resultText.innerHTML = "유저 WIN!";
+                      }
+                      break;
+       
+                   default:
+                      document.write(yourRPS + " 잘못된 입력 입니다 .다시입력하세요");
+
+                }   
+             
+                
+             };         
+             
+          }
+          
+          var rps = prompt("(가위, 바위, 보)를 입력하세요");
+          //var player = new RPSPlayer(rps);
+          //player.result();
+          new RPSPlayer(rps).result() ; 
+          
+       } 
+       </script>
+    <body>
+       <table border='1'>
+          <tr>
+             <td>유저</td>
+             <td>컴퓨터</td>
+          </tr>
+          <tr>
+             <td><img id='user'></td>
+             <td><img id='computer'></td>
+          </tr>
+          <tr>
+             <td id="result" colspan='2'></td>
+          </tr>
+       </table>
+    </body>
+    </html>
+    ```
+
+- 내가 한 코드
+
+    ```jsx
+    오류 수정 중..
+    ```
+
+---
+
+### 4. Bom , 과 Dom 이란?
+
+> BOM(Brouser Object Model)
+
+- 브라우저에 대한 모든 내용을 담고있는 객체, 브라우저에 관련된 내용 모두포함한다.
+- 전역객체인 window의 프로퍼티와 메소드들을 통해 제어할 수 있다.
+
+**구조**
+
+![01-21%2026444fa0a08f4eca849c7e2a843aff4d/Untitled.png](01-21%2026444fa0a08f4eca849c7e2a843aff4d/Untitled.png)
+
+> DOM(Document Object Model)
+
+- HTML과 XML문서의 프로그래밍 Interface이다.'
+- 문서의 구조화된 표현을 제공하며 프로그래밍 언어가 DOM 구조에 접근할 수 있는 방법을 제공하여 문서구조, 스타일, 내용 등을 변경할 수 있게 돕는다.
+
+**구조**
+
+![01-21%2026444fa0a08f4eca849c7e2a843aff4d/Untitled%201.png](01-21%2026444fa0a08f4eca849c7e2a843aff4d/Untitled%201.png)
